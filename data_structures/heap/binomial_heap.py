@@ -3,7 +3,7 @@ Binomial Heap
 Reference: Advanced Data Structures, Peter Brass
 """
 
-
+my_array = [False] * 9 
 class Node:
     """
     Node in a doubly-linked binomial tree, containing:
@@ -252,6 +252,7 @@ class BinomialHeap:
 
     def is_empty(self):
         return self.size == 0
+    
 
     def delete_min(self):
         """
@@ -263,7 +264,9 @@ class BinomialHeap:
         min_value = self.min_node.val
 
         # Last element in heap corner case
+       
         if self.size == 1:
+            my_array[0] = True
             # Update size
             self.size = 0
 
@@ -278,6 +281,7 @@ class BinomialHeap:
         # The structure of the tree implies that this should be the bottom root
         # and there is at least one other root
         if self.min_node.right is None:
+            my_array[1] = True
             # Update size
             self.size -= 1
 
@@ -290,6 +294,7 @@ class BinomialHeap:
             i = self.bottom_root.parent
             while i:
                 if i.val < self.min_node.val:
+                    my_array[2] = True
                     self.min_node = i
                 i = i.parent
             return min_value
@@ -305,9 +310,11 @@ class BinomialHeap:
             size_of_new = size_of_new * 2 + 1
             bottom_of_new = bottom_of_new.left
             if bottom_of_new.val < min_of_new.val:
+                my_array[3] = True
                 min_of_new = bottom_of_new
         # Corner case of single root on top left path
         if (not self.min_node.left) and (not self.min_node.parent):
+            my_array[4] = True
             self.size = size_of_new
             self.bottom_root = bottom_of_new
             self.min_node = min_of_new
@@ -333,6 +340,7 @@ class BinomialHeap:
         # Update links of previous_node and search below for new min_node and
         # bottom_root
         if previous_node:
+            my_array[5] = True
             previous_node.parent = next_node
 
             # Update bottom_root and search for min_node below
@@ -341,14 +349,17 @@ class BinomialHeap:
             while self.bottom_root.left:
                 self.bottom_root = self.bottom_root.left
                 if self.bottom_root.val < self.min_node.val:
+                    my_array[6] = True
                     self.min_node = self.bottom_root
         if next_node:
+            my_array[7] = True
             next_node.left = previous_node
 
             # Search for new min_node above min_node
             i = next_node
             while i:
                 if i.val < self.min_node.val:
+                    my_array[8] = True
                     self.min_node = i
                 i = i.parent
         # Merge heaps
@@ -397,5 +408,18 @@ class BinomialHeap:
 # Unit Tests
 if __name__ == "__main__":
     import doctest
+    """
+    >>> h = Heap()  # Max-heap
+    >>> h.insert(1, 34)
+    >>> h.insert(2, 31)
+    >>> h.insert(3, 30)
+    >>> h.delete_min(2)
+    30
+    
 
+
+    """
+    print (my_array)
     doctest.testmod()
+    
+    
